@@ -4,6 +4,7 @@ namespace HandsomeAlfin\DataMigrationBundle\DataSource;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use HandsomeAlfin\DataMigrationBundle\DataSource\Table;
+use HandsomeAlfin\DataMigrationBundle\DataSource\ResultAnalysis;
 
 class DataSource extends Bundle
 {
@@ -17,6 +18,7 @@ class DataSource extends Bundle
     private $custom_relations_fields;
 
     private $active_table = '';
+    private $result_analysis;
 
     function __construct($data_source, $custom_relations_fields)
     {
@@ -34,6 +36,7 @@ class DataSource extends Bundle
                 $this->setTableAndColumn($data_source[0], $data_source[1]);
             }
         }
+        $this->result_analysis = (new ResultAnalysis($this->data_source_json))->getReports();
     }
 
     private function setTableAndColumn($table_name, $column_name)
@@ -76,12 +79,13 @@ class DataSource extends Bundle
         }
         return false;
     }
-
+    
     public function get()
     {
         return [
             'data_source_json' => $this->data_source_json,
             'table_not_found' => $this->table_not_found,
+            'result_analysis' => $this->result_analysis
         ];
     }
 }

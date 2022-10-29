@@ -3,7 +3,7 @@
 namespace HandsomeAlfin\DataMigrationBundle\DataSource;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use HandsomeAlfin\CustomRelationField\CustomRelationField\CustomRelationField;
+use HandsomeAlfin\DataMigrationBundle\CustomRelationField\CustomRelationField;
 
 class Table extends Bundle
 {

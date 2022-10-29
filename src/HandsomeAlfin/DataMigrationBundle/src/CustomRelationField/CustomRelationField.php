@@ -1,6 +1,6 @@
 <?php
 
-namespace HandsomeAlfin\CustomRelationField\CustomRelationField;
+namespace HandsomeAlfin\DataMigrationBundle\CustomRelationField;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
