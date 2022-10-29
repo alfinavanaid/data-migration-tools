@@ -1,8 +1,8 @@
 <?php
 
-namespace HandsomeAlfin\DataMigrationTools;
+namespace Lib\HandsomeAlfin\DataMigrationTools;
 
-use HandsomeAlfin\DataMigrationTools\DataSource\DataSource;
+use Lib\HandsomeAlfin\DataMigrationTools\DataSource\DataSource;
 
 class DataMigrationTools
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace HandsomeAlfin\DataMigrationTools\DataSource;
+namespace Lib\HandsomeAlfin\DataMigrationTools\DataSource;
 
-use HandsomeAlfin\DataMigrationTools\DataSource\Table;
-use HandsomeAlfin\DataMigrationTools\DataSource\ResultAnalysis;
-use HandsomeAlfin\DataMigrationTools\DataSource\Table\DDLSequenceLayer;
+use Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table;
+use Lib\HandsomeAlfin\DataMigrationTools\DataSource\ResultAnalysis;
+use Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table\DDLSequenceLayer;
 
 class DataSource
 {

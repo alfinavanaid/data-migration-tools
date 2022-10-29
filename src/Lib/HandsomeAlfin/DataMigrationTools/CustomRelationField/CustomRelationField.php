@@ -1,6 +1,6 @@
 <?php
 
-namespace HandsomeAlfin\DataMigrationTools\CustomRelationField;
+namespace Lib\HandsomeAlfin\DataMigrationTools\CustomRelationField;
 
 class CustomRelationField {
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace HandsomeAlfin\DataMigrationTools\DataSource;
+namespace Lib\HandsomeAlfin\DataMigrationTools\DataSource;
 
-use HandsomeAlfin\DataMigrationTools\CustomRelationField\CustomRelationField;
+use Lib\HandsomeAlfin\DataMigrationTools\CustomRelationField\CustomRelationField;
 
 class Table
 {
