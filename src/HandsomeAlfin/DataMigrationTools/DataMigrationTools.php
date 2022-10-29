@@ -1,13 +1,11 @@
 <?php
 
-namespace HandsomeAlfin\DataMigrationBundle;
+namespace HandsomeAlfin\DataMigrationTools;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use HandsomeAlfin\DataMigrationBundle\DataSource\DataSource;
+use HandsomeAlfin\DataMigrationTools\DataSource\DataSource;
 
-class DataMigrationBundle extends Bundle
+class DataMigrationTools
 {
-
 
     private $data_source;
     private $custom_relations_fields;
@@ -28,13 +26,12 @@ class DataMigrationBundle extends Bundle
         dd($data_source);
         $this->data_source_json = $data_source['data_source_json'];
         $this->table_not_found = $data_source['table_not_found'];
-
     }
 
-    public function get() {
+    public function get()
+    {
         unset($this->data_source);
         unset($this->custom_relations_fields);
         return $this;
     }
-    
 }

@@ -1,10 +1,8 @@
 <?php
 
-namespace HandsomeAlfin\DataMigrationBundle\CustomRelationField;
+namespace HandsomeAlfin\DataMigrationTools\CustomRelationField;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-class CustomRelationField extends Bundle {
+class CustomRelationField {
 
 
     private $custom_relations_fields;

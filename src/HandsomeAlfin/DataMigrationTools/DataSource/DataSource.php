@@ -1,12 +1,12 @@
 <?php
 
-namespace HandsomeAlfin\DataMigrationBundle\DataSource;
+namespace HandsomeAlfin\DataMigrationTools\DataSource;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use HandsomeAlfin\DataMigrationBundle\DataSource\Table;
-use HandsomeAlfin\DataMigrationBundle\DataSource\ResultAnalysis;
+use HandsomeAlfin\DataMigrationTools\DataSource\Table;
+use HandsomeAlfin\DataMigrationTools\DataSource\ResultAnalysis;
+use HandsomeAlfin\DataMigrationTools\DataSource\Table\DDLSequenceLayer;
 
-class DataSource extends Bundle
+class DataSource
 {
 
 
@@ -36,6 +36,7 @@ class DataSource extends Bundle
                 $this->setTableAndColumn($data_source[0], $data_source[1]);
             }
         }
+        // $this->data_source_json = (new DDLSequenceLayer($this->data_source_json))->execute();
         $this->result_analysis = (new ResultAnalysis($this->data_source_json))->getReports();
     }
 
@@ -79,7 +80,7 @@ class DataSource extends Bundle
         }
         return false;
     }
-    
+
     public function get()
     {
         return [

@@ -1,11 +1,10 @@
 <?php
 
-namespace HandsomeAlfin\DataMigrationBundle\DataSource;
+namespace HandsomeAlfin\DataMigrationTools\DataSource;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use HandsomeAlfin\DataMigrationBundle\CustomRelationField\CustomRelationField;
+use HandsomeAlfin\DataMigrationTools\CustomRelationField\CustomRelationField;
 
-class Table extends Bundle
+class Table
 {
 
     public $table_name;

@@ -1,10 +1,8 @@
 <?php
 
-namespace HandsomeAlfin\DataMigrationBundle\DataSource;
+namespace HandsomeAlfin\DataMigrationTools\DataSource;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-class ResultAnalysis extends Bundle
+class ResultAnalysis
 {
 
     private $data_source_json;
