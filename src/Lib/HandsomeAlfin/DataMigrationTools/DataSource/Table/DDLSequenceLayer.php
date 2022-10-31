@@ -40,17 +40,16 @@ class DDLSequenceLayer
 
             foreach ($table->relations_parent as $relations_parent) {
 
-                $parent_table = Relations::getTablenameOfString($relations_parent);
+                $parent_table = Relations::getReferenceTablenameOfString($relations_parent);
                 $this->log($table_name, 'has parent (' . $parent_table . ')<br/>');
 
                 if ($this->checkParentTableWithoutSequence($parent_table)) {
                     $this->findTheParent($this->checkParentTableWithoutSequence($parent_table));
                 } else {
-
                     if ($this->data_source_json[$table_name]->extract_layer == null) {
                         $highest_extract_layer = $this->getHighestParentSequence($table_name);
                         $this->data_source_json[$table_name]->extract_layer = $highest_extract_layer + 1;
-                        $this->log($table_name, 'set layer to (' . ($highest_extract_layer + 1) . ') <br/>');
+                        $this->log($table_name, '<b>set layer to (' . ($highest_extract_layer + 1) . ') </b><br/>');
                     }
 
                     $this->findTheChild($parent_table);
@@ -64,7 +63,7 @@ class DDLSequenceLayer
             // check if this table has sequence
             if ($this->data_source_json[$table_name]->extract_layer == null) {
                 $this->data_source_json[$table_name]->extract_layer = 1;
-                $this->log($table_name, 'set layer to (1) <br/>');
+                $this->log($table_name, '<b>set layer to (1)</b><br/>');
             }
 
             // check if this table has child 
@@ -91,7 +90,7 @@ class DDLSequenceLayer
             // looping the table child
             foreach ($table->relations_child as $relations_child) {
 
-                $child_table_name = Relations::getTablenameOfString($relations_child);
+                $child_table_name = Relations::getReferenceTablenameOfString($relations_child);
                 $this->log($table_name, 'has children (' . $child_table_name . ') <br/>');
                 $this->log($child_table_name, 'find parent without sequence <br/>');
 
@@ -101,14 +100,13 @@ class DDLSequenceLayer
 
                     // yes
                     $this->findTheParent($this->checkParentTableWithoutSequence($child_table_name));
-
                 } else {
 
                     // no 
                     if ($this->data_source_json[$child_table_name]->extract_layer == null) {
                         $highest_extract_layer = $this->getHighestParentSequence($child_table_name);
                         $this->data_source_json[$child_table_name]->extract_layer = $highest_extract_layer + 1;
-                        $this->log($child_table_name, 'set layer to (' . ($highest_extract_layer + 1) . ') <br/>');
+                        $this->log($child_table_name, '<b>set layer to (' . ($highest_extract_layer + 1) . ') </b><br/>');
                     }
 
                     $this->findTheChild($child_table_name);
@@ -129,13 +127,10 @@ class DDLSequenceLayer
     {
 
         foreach ($this->data_source_json[$table_name]->relations_parent as $relations_parent) {
-            $extract_layer = $this->data_source_json[Relations::getTablenameOfString($relations_parent)]->extract_layer;
+            $extract_layer = $this->data_source_json[Relations::getReferenceTablenameOfString($relations_parent)]->extract_layer;
             if ($extract_layer == null) {
-                $this->log($table_name, 'has parent without sequence (' . Relations::getTablenameOfString($relations_parent) . ')<br/>');
-                return Relations::getTablenameOfString($relations_parent);
-                //     $this->log($table_name, 'parent dont had sequence (' . Relations::getTablenameOfString($relations_parent) . ') <br/>');
-
-                //     $this->findTheParent(Relations::getTablenameOfString($relations_parent));
+                $this->log($table_name, 'has parent without sequence (' . Relations::getReferenceTablenameOfString($relations_parent) . ')<br/>');
+                return Relations::getReferenceTablenameOfString($relations_parent);
             }
         }
         if (count($this->data_source_json[$table_name]->relations_parent) == 0) {
@@ -147,16 +142,18 @@ class DDLSequenceLayer
         }
     }
 
-    function getParentWithoutSequence($table_name)
-    {
-    }
-
     function getHighestParentSequence($table_name)
     {
         $highest_extract_layer = 0;
         foreach ($this->data_source_json[$table_name]->relations_parent as $relations_parent) {
-            $extract_layer = $this->data_source_json[Relations::getTablenameOfString($relations_parent)]->extract_layer;
-            $this->log($table_name, 'get highest parent sequence (' . Relations::getTablenameOfString($relations_parent) . ') = ' . $extract_layer . '<br/>');
+            $extract_layer = $this->data_source_json[Relations::getReferenceTablenameOfString($relations_parent)]->extract_layer;
+            $this->log($table_name, 'get highest parent sequence (' . Relations::getReferenceTablenameOfString($relations_parent) . ') = ' . $extract_layer . '<br/>');
+            if($extract_layer == null) {
+                $this->log($table_name, ' parent (' . Relations::getReferenceTablenameOfString($relations_parent) . ') is null, find the parent<br/>');
+                $this->findTheParent(Relations::getReferenceTablenameOfString($relations_parent));
+                $extract_layer = $this->data_source_json[Relations::getReferenceTablenameOfString($relations_parent)]->extract_layer;
+                $this->log($table_name, 'get highest parent sequence (' . Relations::getReferenceTablenameOfString($relations_parent) . ') = ' . $extract_layer . '<br/>');
+            }
 
             if ($extract_layer >= $highest_extract_layer) {
                 $highest_extract_layer = $extract_layer;
@@ -173,11 +170,11 @@ class DDLSequenceLayer
             if ($data_source_json->extract_layer != null && count($data_source_json->relations_child) > 0) {
                 foreach ($data_source_json->relations_child as $relations_child) {
                     if (
-                        $this->data_source_json[Relations::getTablenameOfString($relations_child)]->extract_layer == null
-                        && count($this->data_source_json[Relations::getTablenameOfString($relations_child)]->relations_child) > 0
+                        $this->data_source_json[Relations::getReferenceTablenameOfString($relations_child)]->extract_layer == null
+                        && count($this->data_source_json[Relations::getReferenceTablenameOfString($relations_child)]->relations_child) > 0
                     ) {
-                        $this->log('', '---------- find sequenced table with unsequenced child (' . Relations::getTablenameOfString($relations_child) . ') ---------<br/>');
-                        return Relations::getTablenameOfString($relations_child);
+                        $this->log('', '---------- find sequenced table with unsequenced child (' . Relations::getReferenceTablenameOfString($relations_child) . ') ---------<br/>');
+                        return Relations::getReferenceTablenameOfString($relations_child);
                     }
                 }
             }
@@ -189,7 +186,7 @@ class DDLSequenceLayer
     {
         if (self::ENABLE_LOGGING) {
             print_r('[' . $this->log_number . '] ' . $table_name . ' : ' . $message);
-            $this->log_number++;
         }
+        $this->log_number++;
     }
 }
