@@ -31,14 +31,22 @@ class CustomRelationField {
         return $this->table_alias;
     }
 
-    function checkTableIgnored($reference_table_name, $column_name)
+    function checkTableIgnored($reference_table_name, $column_name, $table_name = '')
     {
         if (array_key_exists('table_not_found', $this->custom_relations_fields)) 
         {
             if (array_key_exists($reference_table_name, $this->custom_relations_fields->table_not_found)) {
                 $custom_table = ((array) $this->custom_relations_fields->table_not_found)[$reference_table_name];
                 if ($custom_table->type == 'ignored' && $custom_table->table_name == $reference_table_name && $custom_table->column_name == $column_name) {
-                    return true;
+                    if(array_key_exists('table_name_called_from', $custom_table)) {
+                        if($custom_table->table_name_called_from == $table_name) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return true;
+                    }
                 }
             }
         }
