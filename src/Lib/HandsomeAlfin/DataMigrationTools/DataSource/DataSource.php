@@ -36,7 +36,7 @@ class DataSource
                 $this->setTableAndColumn($data_source[0], $data_source[1]);
             }
         }
-        // $this->data_source_json = (new DDLSequenceLayer($this->data_source_json))->execute();
+        $this->data_source_json = (new DDLSequenceLayer($this->data_source_json))->execute('shop');
         $this->result_analysis = (new ResultAnalysis($this->data_source_json))->getReports();
     }
 

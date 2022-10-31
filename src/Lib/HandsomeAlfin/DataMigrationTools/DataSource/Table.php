@@ -3,6 +3,7 @@
 namespace Lib\HandsomeAlfin\DataMigrationTools\DataSource;
 
 use Lib\HandsomeAlfin\DataMigrationTools\CustomRelationField\CustomRelationField;
+use Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table\Relations;
 
 class Table
 {
@@ -12,6 +13,7 @@ class Table
     public $relations_child;
     public $relations_parent;
     public $table_not_found;
+    public $extract_layer;
 
     public $new_parent_table_name;
 
@@ -22,6 +24,7 @@ class Table
         $this->relations_child = (isset($table->relations_child)) ? $table->relations_child : [];
         $this->relations_parent = (isset($table->relations_parent)) ? $table->relations_parent : [];
         $this->new_parent_table_name = null;
+        $this->extract_layer = null;
     }
 
     function setTableName($table_name)
@@ -51,9 +54,9 @@ class Table
                     */
 
                     $CustomRelationField = new CustomRelationField($custom_relations_fields);
-                    if($CustomRelationField->checkTableNotFound($reference_table_name)) {
+                    if ($CustomRelationField->checkTableNotFound($reference_table_name)) {
                         $reference_table_name = $CustomRelationField->getAlias();
-                    } elseif($CustomRelationField->checkTableIgnored($reference_table_name, $column_name)) {
+                    } elseif ($CustomRelationField->checkTableIgnored($reference_table_name, $column_name)) {
                         return;
                     } else {
                         $this->table_not_found = [
@@ -62,14 +65,14 @@ class Table
                             'foreign_table' => $this->table_name
                         ];
                     }
-
                 }
 
-                if(!$this->table_not_found) {
-                    array_push($this->relations_parent, ($this->table_name . '.' . $column_name . ' = ' . $reference_table_name . '.' . $column_name));
-                    $this->new_parent_table_name = $reference_table_name;
+                if (!$this->table_not_found) {;
+                    if($this->table_name != $reference_table_name) {
+                        array_push($this->relations_parent, Relations::stringWriteRelationship($this->table_name, $column_name, $reference_table_name, $column_name));
+                        $this->new_parent_table_name = $reference_table_name;
+                    }
                 }
-
             }
         }
     }
@@ -88,10 +91,9 @@ class Table
     {
         array_push($this->relations_child, ($this->table_name . '.' . $column_name . ' = ' . $reference_table_name . '.' . $column_name));
     }
-    
+
     function get()
     {
         return $this;
     }
-
 }
