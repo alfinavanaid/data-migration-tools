@@ -47,16 +47,17 @@ class Table
                 Search the reference table on the existing table list
                 */
 
+                $CustomRelationField = new CustomRelationField($custom_relations_fields);
+                
                 if (!array_search($reference_table_name, $table_list)) {
 
                     /* 
                     Table not found on the list, we could check on the custom relations field
                     */
 
-                    $CustomRelationField = new CustomRelationField($custom_relations_fields);
                     if ($CustomRelationField->checkTableNotFound($reference_table_name)) {
                         $reference_table_name = $CustomRelationField->getAlias();
-                    } elseif ($CustomRelationField->checkTableIgnored($reference_table_name, $column_name)) {
+                    } elseif ($CustomRelationField->checkTableIgnored($reference_table_name, $column_name, $this->table_name)) {
                         return;
                     } else {
                         $this->table_not_found = [
@@ -66,6 +67,9 @@ class Table
                         ];
                     }
                 }
+
+                if ($CustomRelationField->checkTableIgnored($reference_table_name, $column_name, $this->table_name))
+                    return;
 
                 if (!$this->table_not_found) {;
                     if($this->table_name != $reference_table_name) {

@@ -9,8 +9,8 @@ class DataMigrationTools
 
     private $data_source;
     private $custom_relations_fields;
-    private $data_source_json;
-    private $table_not_found;
+    public $data_source_json;
+    public $table_not_found;
 
     function __construct($data_source, $custom_relations_fields)
     {
@@ -23,7 +23,6 @@ class DataMigrationTools
         $DataSource = new DataSource($this->data_source, $this->custom_relations_fields);
         $DataSource->scanTable();
         $data_source = $DataSource->get();
-        dd($data_source);
         $this->data_source_json = $data_source['data_source_json'];
         $this->table_not_found = $data_source['table_not_found'];
     }
