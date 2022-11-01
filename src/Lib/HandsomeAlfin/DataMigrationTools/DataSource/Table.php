@@ -14,6 +14,7 @@ class Table
     public $relations_parent;
     public $table_not_found;
     public $extract_layer;
+    public $primary_key;
 
     public $new_parent_table_name;
 
@@ -23,6 +24,7 @@ class Table
         $this->column = (isset($table->column)) ? $table->column : [];
         $this->relations_child = (isset($table->relations_child)) ? $table->relations_child : [];
         $this->relations_parent = (isset($table->relations_parent)) ? $table->relations_parent : [];
+        $this->primary_key = (isset($table->primary_key)) ? $table->primary_key : null;
         $this->new_parent_table_name = null;
         $this->extract_layer = null;
     }
@@ -48,7 +50,7 @@ class Table
                 */
 
                 $CustomRelationField = new CustomRelationField($custom_relations_fields);
-                
+
                 if (!array_search($reference_table_name, $table_list)) {
 
                     /* 
@@ -77,6 +79,8 @@ class Table
                         $this->new_parent_table_name = $reference_table_name;
                     }
                 }
+            } else {
+                $this->primary_key = $column_name;
             }
         }
     }

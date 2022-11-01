@@ -7,15 +7,14 @@ use Lib\HandsomeAlfin\DataMigrationTools\DataSource\DataSource;
 class DataMigrationTools
 {
 
-    private $data_source;
-    private $custom_relations_fields;
+    public $data_source;
+    public $custom_relations_fields;
     public $data_source_json;
     public $table_not_found;
 
-    function __construct($data_source, $custom_relations_fields)
+    function __construct()
     {
-        $this->data_source = $data_source;
-        $this->custom_relations_fields = $custom_relations_fields;
+
     }
 
     public function analyze()
@@ -25,6 +24,13 @@ class DataMigrationTools
         $data_source = $DataSource->get();
         $this->data_source_json = $data_source['data_source_json'];
         $this->table_not_found = $data_source['table_not_found'];
+    }
+
+    public function extract()
+    {
+        $DataSource = new DataSource(null, null, $this->data_source_json);
+        $DataSource->extractDDL();
+
     }
 
     public function get()

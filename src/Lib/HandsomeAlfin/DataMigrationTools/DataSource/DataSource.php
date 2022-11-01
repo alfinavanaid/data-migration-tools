@@ -5,6 +5,7 @@ namespace Lib\HandsomeAlfin\DataMigrationTools\DataSource;
 use Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table;
 use Lib\HandsomeAlfin\DataMigrationTools\DataSource\ResultAnalysis;
 use Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table\DDLSequenceLayer;
+use Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table\DDLExtract;
 
 class DataSource
 {
@@ -20,10 +21,10 @@ class DataSource
     private $active_table = '';
     private $result_analysis;
 
-    function __construct($data_source, $custom_relations_fields)
+    function __construct($data_source, $custom_relations_fields, $data_source_json = '')
     {
         $this->data_source = json_decode($data_source);
-        $this->data_source_json = [];
+        $this->data_source_json = $data_source_json != '' ? json_decode($data_source_json) : [];
         $this->table_not_found = [];
         $this->custom_relations_fields = json_decode($custom_relations_fields);
     }
@@ -37,6 +38,7 @@ class DataSource
             }
         }
         $this->data_source_json = (new DDLSequenceLayer($this->data_source_json))->execute('shop');
+        // dd($this->data_source_json);
         $this->result_analysis = (new ResultAnalysis($this->data_source_json))->getReports();
     }
 
@@ -88,5 +90,12 @@ class DataSource
             'table_not_found' => $this->table_not_found,
             'result_analysis' => $this->result_analysis
         ];
+    }
+
+    public function extractDDL()
+    {
+        $DDLExtract = new DDLExtract($this->data_source_json);
+        $DDLExtract->generateSql();
+
     }
 }
