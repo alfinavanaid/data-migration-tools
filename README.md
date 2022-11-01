@@ -1,6 +1,6 @@
 # Data Migration Tools
 
-This is the package to migrate data from the on database to the other using symforny 5.4 based on the master table column value. Sometimes we need to test some issue happen on the production but it's not possible to do because will impacted the real data on the real user side.
+This is the package to migrate data from the on database to the other using symfony 5.4 based on the master table column value. Sometimes we need to test some issue happen on the production but it's not possible to do because will impacted the real data on the real user side.
 
 ## Requirements
 PHP 7.3.33
