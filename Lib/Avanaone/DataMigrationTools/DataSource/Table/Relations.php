@@ -1,6 +1,6 @@
 <?php
 
-namespace Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table;
+namespace Lib\Avanaone\DataMigrationTools\DataSource\Table;
 
 class Relations
 {

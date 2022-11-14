@@ -26,3 +26,8 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    Lib\:
+        resource: '../Lib'
+        tags: ['lib.service_arguments']
+        # exclude: ['../Lib/HandsomeAlfin/DataMigration/Tools/Config.php']

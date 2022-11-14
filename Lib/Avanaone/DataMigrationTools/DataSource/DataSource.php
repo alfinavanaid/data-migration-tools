@@ -1,11 +1,11 @@
 <?php
 
-namespace Lib\HandsomeAlfin\DataMigrationTools\DataSource;
+namespace Lib\Avanaone\DataMigrationTools\DataSource;
 
-use Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table;
-use Lib\HandsomeAlfin\DataMigrationTools\DataSource\ResultAnalysis;
-use Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table\DDLSequenceLayer;
-use Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table\DDLExtract;
+use Lib\Avanaone\DataMigrationTools\DataSource\Table;
+use Lib\Avanaone\DataMigrationTools\DataSource\ResultAnalysis;
+use Lib\Avanaone\DataMigrationTools\DataSource\Table\DDLSequenceLayer;
+use Lib\Avanaone\DataMigrationTools\DataSource\Table\DDLExtract;
 
 class DataSource
 {
@@ -21,16 +21,42 @@ class DataSource
     private $active_table = '';
     private $result_analysis;
 
-    function __construct($data_source, $custom_relations_fields, $data_source_json = '')
+    private static $file_url = 'public/storage/data_source.json';
+
+    function __construct(array $data_source)
     {
-        $this->data_source = json_decode($data_source);
-        $this->data_source_json = $data_source_json != '' ? json_decode($data_source_json) : [];
-        $this->table_not_found = [];
-        $this->custom_relations_fields = json_decode($custom_relations_fields);
+        $this->data_source = $data_source;
+    }
+
+    function setCustomRelationsFields(array $custom_relations_fields): void
+    {
+        $this->custom_relations_fields = $custom_relations_fields;
+    }
+
+    function setDataSourceJson(array $data_source_json): void
+    {
+        $this->data_source_json = $data_source_json;
     }
 
     function scanTable()
     {
+        // $new = [
+        //     'alias' => [],
+        //     'ignore' => []
+        // ];
+        // foreach($this->custom_relations_fields->table_not_found as $key => $val) {
+        //     if($val->type == 'alias') {
+        //         array_push($new['alias'], [
+        //             'existing_table_name' => $key,
+        //             'new_table_name' => $val->table_name
+        //         ]);
+        //     } else {
+        //         $new['ignore'][$val->table_name.'.'.$val->column_name] = $val;
+        //     }
+        //     // dd($val);
+        // }
+        // dd($new);
+        // dd($this->custom_relations_fields);
         $this->table_list = array_values(array_unique(array_column($this->data_source, 0)));
         if (count($this->data_source) > 0 && $this->data_source <> null && !empty($this->data_source)) {
             foreach ($this->data_source as $data_source) {
@@ -38,7 +64,6 @@ class DataSource
             }
         }
         $this->data_source_json = (new DDLSequenceLayer($this->data_source_json))->execute('shop');
-        // dd($this->data_source_json);
         $this->result_analysis = (new ResultAnalysis($this->data_source_json))->getReports();
     }
 
@@ -94,8 +119,27 @@ class DataSource
 
     public function extractDDL()
     {
-        $DDLExtract = new DDLExtract($this->data_source_json);
+        $main_data = [
+            'table_name' => 'shop',
+            'column_name' => 'shop_id',
+            'column_value' => '77786'
+        ];
+
+        $DDLExtract = new DDLExtract($this->data_source_json, $main_data);
         $DDLExtract->generateSql();
+    }
+
+    public static function getFileUrl(): string
+    {
+        return SELF::$file_url;
+    }
+
+    public function validate(): void
+    {
+
+        if (empty($this->data_source)) {
+            throw new \Exception('Empty `data_source.json` file. Please check at `' . DataSource::getFileUrl() . '`');
+        }
 
     }
 }

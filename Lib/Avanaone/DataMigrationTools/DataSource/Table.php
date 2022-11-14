@@ -1,9 +1,9 @@
 <?php
 
-namespace Lib\HandsomeAlfin\DataMigrationTools\DataSource;
+namespace Lib\Avanaone\DataMigrationTools\DataSource;
 
-use Lib\HandsomeAlfin\DataMigrationTools\CustomRelationField\CustomRelationField;
-use Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table\Relations;
+use Lib\Avanaone\DataMigrationTools\CustomRelationField\CustomRelationField;
+use Lib\Avanaone\DataMigrationTools\DataSource\Table\Relations;
 
 class Table
 {
@@ -59,7 +59,7 @@ class Table
 
                     if ($CustomRelationField->checkTableNotFound($reference_table_name)) {
                         $reference_table_name = $CustomRelationField->getAlias();
-                    } elseif ($CustomRelationField->checkTableIgnored($reference_table_name, $column_name, $this->table_name)) {
+                    } elseif ($CustomRelationField->checkTableIgnored($reference_table_name, $column_name, $this->table_name)) {    
                         return;
                     } else {
                         $this->table_not_found = [
