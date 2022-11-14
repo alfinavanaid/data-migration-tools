@@ -1,19 +1,12 @@
 <?php
 
-namespace Lib\Avanaone\DataMigrationTools\CustomRelationField;
-
-use Lib\Avanaone\DataMigrationTools\CustomRelationField\TableAlias;
-use Lib\Avanaone\DataMigrationTools\CustomRelationField\TableIgnored;
-use Lib\Avanaone\DataMigrationTools\CustomRelationField\TableColumnAlias;
-use Lib\Avanaone\DataMigrationTools\CustomRelationField\TableColumnIgnored;
+namespace Lib\HandsomeAlfin\DataMigrationTools\CustomRelationField;
 
 class CustomRelationField {
 
 
     private $custom_relations_fields;
     private $table_alias;
-
-    private static $file_url = 'public/storage/custom_relations_field.json';
 
     function __construct($custom_relations_fields)
     {
@@ -59,27 +52,5 @@ class CustomRelationField {
         }
     }
 
-    public static function getFileUrl(): string
-    {
-        return SELF::$file_url;
-    }
-
-    public function validate() : void 
-    {
-
-        $custom_relations_fields = [
-            (new TableAlias($this->custom_relations_fields)),
-            (new TableIgnored($this->custom_relations_fields)),
-            (new TableColumnAlias($this->custom_relations_fields)),
-            (new TableColumnIgnored($this->custom_relations_fields))
-        ];
-
-        foreach ($custom_relations_fields as $val) {
-            if (!$val->validate()) {
-                throw new \Exception('`' . $val->getKeyName() . '` key doesn\'t exists. Please check at `' . CustomRelationField::getFileUrl() . '`');
-            }
-        }
-
-    }
     
 }

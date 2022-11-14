@@ -1,8 +1,8 @@
 <?php
 
-namespace Lib\Avanaone\DataMigrationTools\DataSource\Table;
+namespace Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table;
 
-use Lib\Avanaone\DataMigrationTools\DataSource\Table\Relations;
+use Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table\Relations;
 
 class DDLSequenceLayer
 {
