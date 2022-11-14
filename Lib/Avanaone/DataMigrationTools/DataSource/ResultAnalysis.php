@@ -1,6 +1,6 @@
 <?php
 
-namespace Lib\HandsomeAlfin\DataMigrationTools\DataSource;
+namespace Lib\Avanaone\DataMigrationTools\DataSource;
 
 class ResultAnalysis
 {

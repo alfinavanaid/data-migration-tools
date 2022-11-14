@@ -1,9 +1,10 @@
 <?php
 
-namespace Lib\HandsomeAlfin\DataMigrationTools\DataSource;
+namespace Lib\Avanaone\DataMigrationTools\Utility\Schema;
 
-use Lib\HandsomeAlfin\DataMigrationTools\CustomRelationField\CustomRelationField;
-use Lib\HandsomeAlfin\DataMigrationTools\DataSource\Table\Relations;
+use Lib\Avanaone\DataMigrationTools\CustomRelationField\CustomRelationField;
+use Lib\Avanaone\DataMigrationTools\DataSource\DataSourceObject;
+use Lib\Avanaone\DataMigrationTools\Utility\Schema\Relations;
 
 class Table
 {
@@ -29,7 +30,7 @@ class Table
         $this->extract_layer = null;
     }
 
-    function setTableName($table_name)
+    function setName($table_name)
     {
         $this->table_name = $table_name;
     }
@@ -39,7 +40,7 @@ class Table
         array_push($this->column, $column_name);
     }
 
-    function analyzeRelationship($column_name, $table_list, $custom_relations_fields)
+    function analyzeRelationship($column_name, DataSourceObject $data_source_object)
     {
         if (substr($column_name, -3) === '_id') {
             $reference_table_name = substr($column_name, 0, -3);
@@ -49,15 +50,15 @@ class Table
                 Search the reference table on the existing table list
                 */
 
-                $CustomRelationField = new CustomRelationField($custom_relations_fields);
+                $CustomRelationField = $data_source_object->getCustomRelationsFields();
 
-                if (!array_search($reference_table_name, $table_list)) {
+                if (!array_search($reference_table_name, $data_source_object->getTableList())) {
 
                     /* 
                     Table not found on the list, we could check on the custom relations field
                     */
 
-                    if ($CustomRelationField->checkTableNotFound($reference_table_name)) {
+                    if ($CustomRelationField->checkTableIgnored($reference_table_name)) {
                         $reference_table_name = $CustomRelationField->getAlias();
                     } elseif ($CustomRelationField->checkTableIgnored($reference_table_name, $column_name, $this->table_name)) {
                         return;
@@ -70,11 +71,16 @@ class Table
                     }
                 }
 
-                if ($CustomRelationField->checkTableIgnored($reference_table_name, $column_name, $this->table_name))
+                if ($CustomRelationField->checkTableColumnIgnored($this->table_name, $column_name)) {
                     return;
+                }
+
+                if ($CustomRelationField->checkTableIgnored($reference_table_name)) {
+                    return;
+                }
 
                 if (!$this->table_not_found) {;
-                    if($this->table_name != $reference_table_name) {
+                    if ($this->table_name != $reference_table_name) {
                         array_push($this->relations_parent, Relations::stringWriteRelationship($this->table_name, $column_name, $reference_table_name, $column_name));
                         $this->new_parent_table_name = $reference_table_name;
                     }
