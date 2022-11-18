@@ -19,7 +19,7 @@ class Table
 
     public $new_parent_table_name;
 
-    function __construct($table = null)
+    public function __construct($table = null)
     {
         $this->table_name = (isset($table->table_name)) ? $table->table_name : null;
         $this->column = (isset($table->column)) ? $table->column : [];
@@ -30,17 +30,17 @@ class Table
         $this->extract_layer = null;
     }
 
-    function setName($table_name)
+    public function setName($table_name)
     {
         $this->table_name = $table_name;
     }
 
-    function setNewColumn($column_name)
+    public function setNewColumn($column_name)
     {
         array_push($this->column, $column_name);
     }
 
-    function analyzeRelationship($column_name, DataSourceObject $data_source_object)
+    public function analyzeRelationship($column_name, DataSourceObject $data_source_object)
     {
         if (substr($column_name, -3) === '_id') {
             $reference_table_name = substr($column_name, 0, -3);
@@ -79,6 +79,7 @@ class Table
                     return;
                 }
 
+
                 if (!$this->table_not_found) {;
                     if ($this->table_name != $reference_table_name) {
                         array_push($this->relations_parent, Relations::stringWriteRelationship($this->table_name, $column_name, $reference_table_name, $column_name));
@@ -91,23 +92,28 @@ class Table
         }
     }
 
-    function getNewParentTable()
+    public function getNewParentTable()
     {
         return $this->new_parent_table_name;
     }
 
-    function getTableNotFound()
+    public function getTableNotFound()
     {
         return $this->table_not_found;
     }
 
-    function appendChild($reference_table_name, $column_name)
+    public function appendChild($reference_table_name, $column_name)
     {
         array_push($this->relations_child, ($this->table_name . '.' . $column_name . ' = ' . $reference_table_name . '.' . $column_name));
     }
 
-    function get()
+    public function get()
     {
         return $this;
+    }
+
+    public function getRelationsParentString() : array
+    {
+        return $this->relations_parent;
     }
 }

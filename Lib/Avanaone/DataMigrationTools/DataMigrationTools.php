@@ -39,10 +39,10 @@ class DataMigrationTools
     {
 
         $data_source = (new JsonStructure($this->data_source));
-        $data_source->setType(JsonStructure::TYPE_DATA_SOURCE);
+        $data_source->setType((int) JsonStructure::TYPE_DATA_SOURCE);
 
         $custom_relations_fields = (new JsonStructure($this->custom_relations_fields));
-        $custom_relations_fields->setType(JsonStructure::TYPE_CUSTOM_RELATIONS_FIELD);
+        $custom_relations_fields->setType((int) JsonStructure::TYPE_CUSTOM_RELATIONS_FIELD);
 
         $validate_data_source = ValidateJson::do($data_source);
         $validate_custom_relations_fields = ValidateJson::do($custom_relations_fields);
@@ -51,15 +51,15 @@ class DataMigrationTools
             return [];
         }
 
-        $data_source = new DataSource($data_source->get());
+        $data_source = new DataSource((object) $data_source->get());
         $custom_relations_fields = new CustomRelationField($custom_relations_fields->get());
 
         $data_source_object = new DataSourceObject($data_source);
         $data_source_object->setDataSource($data_source);
         $data_source_object->setCustomRelationsFields($custom_relations_fields);
-        $data_source_object->scanSchema();
-        
-        dd($data_source);
+        // $data_source_object->scanSchema();
+
+        dd($data_source_object->scanSchema()->getDataSourceObject()->getValueByTableName('avacredit_balance'));
 
         return (array) $data_source;
         // $data_source->setType(JsonStructure::TYPE_DATA_SOURCE);

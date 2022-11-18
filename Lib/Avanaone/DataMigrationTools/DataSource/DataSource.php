@@ -2,7 +2,6 @@
 
 namespace Lib\Avanaone\DataMigrationTools\DataSource;
 
-
 class DataSource
 {
 
@@ -17,17 +16,8 @@ class DataSource
         $this->value = $value;
     }
 
-    public function validate(): bool
+    public function getAllValue()
     {
-
-        if (empty($this->value)) {
-            throw new \Exception('Empty `data_source.json` file. Please check at `' . $this->file_url . '`');
-        }
-
-        return true;
-    }
-
-    public function getAllValue() {
         return $this->value;
     }
 
@@ -40,5 +30,20 @@ class DataSource
     {
         return $this->value->{$index}[SELF::index_column_name];
     }
-    
+
+    /**
+     * Validate the data source file of data_source.json assigned to private $data_source variable
+     * @throws \Exception if the key doesn't exists
+     * @return boolean validate()
+     */
+
+    public function validate(): bool
+    {
+
+        if (empty($this->value)) {
+            throw new \Exception('Empty `data_source.json` file. Please check at `' . $this->file_url . '`');
+        }
+
+        return true;
+    }
 }

@@ -6,13 +6,12 @@ use Lib\Avanaone\DataMigrationTools\DataSource\DataSource;
 use Lib\Avanaone\DataMigrationTools\DataSource\DataSourceObject;
 use Lib\Avanaone\DataMigrationTools\Utility\Schema\Table;
 use Lib\Avanaone\DataMigrationTools\DataSource\ResultAnalysis;
-use Lib\Avanaone\DataMigrationTools\Utility\Schema\Table\DDLSequenceLayer;
+use Lib\Avanaone\DataMigrationTools\Utility\Schema\SequenceLayer;
 
 class Scan
 {
 
     private $data_source_object;
-    private $table_not_found;
 
     function __construct(DataSourceObject $data_source_object)
     {
@@ -37,11 +36,11 @@ class Scan
             $this->setTableAndColumn($data_source, $i);
         }
 
-        // $this->data_source_json = (new DDLSequenceLayer($this->data_source_json))->execute('shop');
+        $this->data_source_json = (new SequenceLayer($this->data_source_object))->execute('shop');
         // $this->result_analysis = (new ResultAnalysis($this->data_source_json))->getReports();
     }
 
-    public function getDataSourceObject()
+    public function getDataSourceObject() : DataSourceObject
     {
         return $this->data_source_object;
     }

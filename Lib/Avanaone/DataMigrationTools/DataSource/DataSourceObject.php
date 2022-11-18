@@ -21,15 +21,17 @@ class DataSourceObject
 
     private $result_analysis;
 
+    private static $file_url = 'public/storage/data_source_object.json';
+
     function __construct()
     {
-
     }
 
     function scanSchema()
     {
         $scanSchema = new ScanSchema($this);
         $scanSchema->execute();
+        return $scanSchema;
         // $this->
         // dd($scanSchema->getDataSourceObject());
         // return $scanSchema->getDataSourceObject();
@@ -38,22 +40,6 @@ class DataSourceObject
     public static function getFileUrl(): string
     {
         return SELF::$file_url;
-    }
-
-    /**
-     * Validate the data source file of data_source.json assigned to private $data_source variable
-     * @throws \Exception if the key doesn't exists
-     * @return boolean validate()
-     */
-
-    public function validate(): bool
-    {
-
-        if (empty($this->data_source)) {
-            throw new \Exception('Empty `data_source.json` file. Please check at `' . DataSource::getFileUrl() . '`');
-        }
-
-        return true;
     }
 
     /**
@@ -186,5 +172,4 @@ class DataSourceObject
         $this->value[$table->table_name] = $table;
         return true;
     }
-
 }
